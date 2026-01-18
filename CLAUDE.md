@@ -88,3 +88,8 @@ Dark theme with CSS variables defined in `globals.css`:
 ## Adding Photos
 
 Place images in `public/photos/`. The API automatically discovers them on page load.
+
+## Development Workflow
+
+- **Branching:** Always create a new branch before starting work on a new bug or feature.
+- **Testing:** Write and verify unit tests for any new feature or bug fix.

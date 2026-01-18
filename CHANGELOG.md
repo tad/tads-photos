@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-01-18
+
+### Added
+
+- Auto slideshow feature with 5-second intervals and continuous looping
+- "Slideshow" button in header to start auto-play from first photo
+- Play/pause button in slideshow viewer (bottom-left)
+- Space key support for toggling play/pause
+- Testing framework with Vitest and React Testing Library
+- Unit tests for hooks and components (34 tests)
+
+### Changed
+
+- Clicking prev/next buttons now pauses auto-play
+- Extended keyboard navigation to support Space key
+
 ## [0.1.0] - 2026-01-18
 
 ### Added

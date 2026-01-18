@@ -6,7 +6,8 @@ A modern, minimalist photo gallery built with Next.js. Features a responsive gri
 
 - **Responsive Grid** — Automatically adjusts from 1 column on mobile to 5 columns on desktop
 - **Slideshow Viewer** — Click any photo to view it large with easy navigation
-- **Keyboard Navigation** — Use arrow keys to browse, Escape to close
+- **Auto Slideshow** — Hands-free viewing with 5-second intervals and continuous looping
+- **Keyboard Navigation** — Use arrow keys to browse, Space to play/pause, Escape to close
 - **Fullscreen Mode** — Double-click any photo for immersive fullscreen viewing
 - **Dark Theme** — Easy on the eyes, great for photography
 - **Automatic Discovery** — Just drop photos in a folder and they appear
@@ -41,6 +42,8 @@ A modern, minimalist photo gallery built with Next.js. Features a responsive gri
 | Action | How |
 |--------|-----|
 | Open slideshow | Click any photo |
+| Start auto slideshow | Click "Slideshow" button in header |
+| Play/pause slideshow | Click play/pause button or press Space |
 | Next photo | Click right arrow or press → |
 | Previous photo | Click left arrow or press ← |
 | Close slideshow | Click X or press Escape |

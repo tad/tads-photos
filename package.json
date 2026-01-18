@@ -1,12 +1,14 @@
 {
   "name": "tads-photos",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "next": "^15.1.0",
@@ -23,6 +25,11 @@
     "tailwindcss": "^4.0.0",
     "@tailwindcss/postcss": "^4.0.0",
     "eslint": "^9.17.0",
-    "eslint-config-next": "^15.1.0"
+    "eslint-config-next": "^15.1.0",
+    "vitest": "^2.1.0",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/jest-dom": "^6.6.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "jsdom": "^25.0.0"
   }
 }

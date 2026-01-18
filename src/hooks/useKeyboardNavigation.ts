@@ -7,6 +7,7 @@ interface UseKeyboardNavigationProps {
   onNext: () => void;
   onPrevious: () => void;
   onClose: () => void;
+  onTogglePlay?: () => void;
 }
 
 export function useKeyboardNavigation({
@@ -14,6 +15,7 @@ export function useKeyboardNavigation({
   onNext,
   onPrevious,
   onClose,
+  onTogglePlay,
 }: UseKeyboardNavigationProps) {
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -32,9 +34,13 @@ export function useKeyboardNavigation({
           event.preventDefault();
           onClose();
           break;
+        case " ":
+          event.preventDefault();
+          onTogglePlay?.();
+          break;
       }
     },
-    [isActive, onNext, onPrevious, onClose]
+    [isActive, onNext, onPrevious, onClose, onTogglePlay]
   );
 
   useEffect(() => {

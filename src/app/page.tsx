@@ -9,18 +9,30 @@ import { usePhotos } from "@/hooks/usePhotos";
 export default function Home() {
   const { photos, isLoading, error, total } = usePhotos();
   const [slideshowIndex, setSlideshowIndex] = useState<number | null>(null);
+  const [autoPlayMode, setAutoPlayMode] = useState(false);
 
   const handlePhotoClick = (index: number) => {
+    setAutoPlayMode(false);
     setSlideshowIndex(index);
   };
 
   const handleCloseSlideshow = () => {
     setSlideshowIndex(null);
+    setAutoPlayMode(false);
+  };
+
+  const handleStartSlideshow = () => {
+    setSlideshowIndex(0);
+    setAutoPlayMode(true);
   };
 
   return (
     <main className="min-h-screen">
-      <Header photoCount={total} />
+      <Header
+        photoCount={total}
+        onStartSlideshow={handleStartSlideshow}
+        hasPhotos={photos.length > 0}
+      />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {isLoading ? (
@@ -44,6 +56,7 @@ export default function Home() {
           isOpen={slideshowIndex !== null}
           onClose={handleCloseSlideshow}
           onIndexChange={setSlideshowIndex}
+          autoPlay={autoPlayMode}
         />
       )}
     </main>

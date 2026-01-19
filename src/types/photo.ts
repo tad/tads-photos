@@ -4,6 +4,7 @@ export interface Photo {
   filename: string;
   width: number;
   height: number;
+  uploadedAt?: string;
 }
 
 export interface PhotosResponse {

@@ -11,6 +11,8 @@ A modern, minimalist photo gallery built with Next.js. Features a responsive gri
 - **Fullscreen Mode** — Double-click any photo for immersive fullscreen viewing
 - **Dark Theme** — Easy on the eyes, great for photography
 - **Automatic Discovery** — Just drop photos in a folder and they appear
+- **Admin Dashboard** — Password-protected upload and delete functionality
+- **Vercel Blob Storage** — Cloud storage for photos, ready for deployment
 
 ## Quick Start
 
@@ -59,10 +61,30 @@ npm run build
 npm run start
 ```
 
+## Deploy to Vercel
+
+1. **Push to GitHub** and import in the [Vercel dashboard](https://vercel.com/new)
+
+2. **Create Blob storage** in the Vercel project's Storage tab (auto-sets `BLOB_READ_WRITE_TOKEN`)
+
+3. **Add environment variable** `ADMIN_PASSWORD` with your chosen password
+
+4. **Migrate existing photos** (optional):
+   ```bash
+   BLOB_READ_WRITE_TOKEN=xxx npm run migrate
+   ```
+
+5. **Deploy** — photos are now served from Vercel Blob
+
+### Admin Dashboard
+
+Visit `/admin/login` to access the admin dashboard where you can upload and delete photos.
+
 ## Tech Stack
 
 - [Next.js 15](https://nextjs.org/) — React framework
 - [Tailwind CSS 4](https://tailwindcss.com/) — Styling
+- [Vercel Blob](https://vercel.com/docs/storage/vercel-blob) — Cloud storage
 - [Sharp](https://sharp.pixelplumbing.com/) — Image processing
 - [Lucide](https://lucide.dev/) — Icons
 

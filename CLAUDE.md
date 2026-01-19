@@ -91,5 +91,7 @@ Place images in `public/photos/`. The API automatically discovers them on page l
 
 ## Development Workflow
 
-- **Branching:** Always create a new branch before starting work on a new bug or feature.
+- **Main Branch:** `main` is the source of truth for this project.
+- **Branching:** Always create new branches from `main` before starting work on a new bug or feature.
+- **Pull Requests:** Always create PRs against the `main` branch.
 - **Testing:** Write and verify unit tests for any new feature or bug fix.

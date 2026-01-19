@@ -1,13 +1,20 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useState } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, Maximize, Minimize, Play, Pause } from "lucide-react";
+import { ChevronLeft, ChevronRight, Maximize, Minimize, Play, Pause, Shuffle } from "lucide-react";
 import { Modal } from "@/components/ui/Modal";
 import { useKeyboardNavigation } from "@/hooks/useKeyboardNavigation";
 import { useFullscreen } from "@/hooks/useFullscreen";
 import { useAutoSlideshow } from "@/hooks/useAutoSlideshow";
+import { useRandomOrder } from "@/hooks/useRandomOrder";
 import type { Photo } from "@/types/photo";
+
+const INTERVAL_OPTIONS = [
+  { value: 3000, label: "3s" },
+  { value: 5000, label: "5s" },
+  { value: 10000, label: "10s" },
+];
 
 interface SlideshowProps {
   photos: Photo[];
@@ -31,11 +38,21 @@ export function Slideshow({
   const containerRef = useRef<HTMLDivElement>(null);
   const { isFullscreen, toggleFullscreen, exitFullscreen } = useFullscreen(containerRef);
 
+  const [interval, setInterval] = useState(autoPlayInterval);
+  const [isRandomMode, setIsRandomMode] = useState(false);
+
+  const { getNextIndex, reset: resetRandomOrder } = useRandomOrder({
+    totalPhotos: photos.length,
+    currentIndex,
+    enabled: isRandomMode,
+  });
+
   const currentPhoto = photos[currentIndex];
 
   const goToNext = useCallback(() => {
-    onIndexChange((currentIndex + 1) % photos.length);
-  }, [currentIndex, photos.length, onIndexChange]);
+    const nextIndex = getNextIndex();
+    onIndexChange(nextIndex);
+  }, [getNextIndex, onIndexChange]);
 
   const goToPrevious = useCallback(() => {
     onIndexChange((currentIndex - 1 + photos.length) % photos.length);
@@ -43,9 +60,19 @@ export function Slideshow({
 
   const { isPlaying, play, pause, toggle: togglePlay } = useAutoSlideshow({
     isActive: isOpen,
-    interval: autoPlayInterval,
+    interval,
     onAdvance: goToNext,
   });
+
+  const handleRandomToggle = useCallback(() => {
+    setIsRandomMode((prev) => {
+      if (!prev) {
+        // Turning on random mode - reset the shown set
+        resetRandomOrder();
+      }
+      return !prev;
+    });
+  }, [resetRandomOrder]);
 
   // Start auto-play if autoPlay prop is true when slideshow opens
   const hasStartedAutoPlay = useRef(false);
@@ -126,21 +153,62 @@ export function Slideshow({
           {currentIndex + 1} of {photos.length}
         </div>
 
-        {/* Play/Pause toggle */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            togglePlay();
-          }}
-          className="absolute bottom-4 left-4 z-10 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-          aria-label={isPlaying ? "Pause slideshow" : "Play slideshow"}
-        >
-          {isPlaying ? (
-            <Pause className="h-5 w-5" />
-          ) : (
-            <Play className="h-5 w-5" />
+        {/* Slideshow controls */}
+        <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2">
+          {/* Play/Pause toggle */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              togglePlay();
+            }}
+            className="rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+            aria-label={isPlaying ? "Pause slideshow" : "Play slideshow"}
+          >
+            {isPlaying ? (
+              <Pause className="h-5 w-5" />
+            ) : (
+              <Play className="h-5 w-5" />
+            )}
+          </button>
+
+          {/* Interval selector and shuffle - only visible when playing */}
+          {isPlaying && (
+            <>
+              <select
+                value={interval}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  setInterval(Number(e.target.value));
+                }}
+                onClick={(e) => e.stopPropagation()}
+                className="rounded-full bg-black/50 px-3 py-2 text-sm text-white transition-colors hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/50"
+                aria-label="Slideshow interval"
+              >
+                {INTERVAL_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRandomToggle();
+                }}
+                className={`rounded-full p-2 text-white transition-colors ${
+                  isRandomMode
+                    ? "bg-blue-600 hover:bg-blue-700"
+                    : "bg-black/50 hover:bg-black/70"
+                }`}
+                aria-label={isRandomMode ? "Disable random order" : "Enable random order"}
+                aria-pressed={isRandomMode}
+              >
+                <Shuffle className="h-5 w-5" />
+              </button>
+            </>
           )}
-        </button>
+        </div>
 
         {/* Fullscreen toggle */}
         <button
